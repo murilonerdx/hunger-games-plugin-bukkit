@@ -1,0 +1,28 @@
+name: hunger-games
+version: '${project.version}'
+main: org.murilonerdx.Hungergames
+api-version: '1.20'
+commands:
+  startgame:
+    usage: /startgame
+    description: Iniciar jogos mortais
+    permission: hungergames.startgame
+  enter-start:
+    usage: /enter-start
+    description: Iniciar entradas
+    permission: hungergames.enter-start
+  enter:
+    description: Entrar no jogo de jogos mortais
+    usage: /enter
+    permission: hungergames.enter
+  punish:
+    description: Fazer jogador voltar a jogar
+    usage: /punish <player>
+    permission: hungergames.enter
+permissions:
+  hungergames.startgame:
+    description: Você inicia os jogos mortais
+    default: op
+  hungergames.enter-start:
+    description: Você inicia os jogos mortais
+    default: op
