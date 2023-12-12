@@ -10,6 +10,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -19,13 +20,11 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 import org.murilonerdx.Hungergames;
+import org.murilonerdx.scheduler.BootsEffectTask;
 
 
 import java.text.ParseException;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.murilonerdx.Hungergames.*;
 import static org.murilonerdx.utils.ItemsUtils.*;
@@ -53,16 +52,22 @@ public class PlayerEventServerListener implements Listener {
         Player player = event.getPlayer();
         ItemStack boots = player.getInventory().getBoots();
 
-        if (boots != null && boots.isSimilar(createFireBoots())) {
-            player.setWalkSpeed(0.7f); // Aumenta a velocidade de movimento
-            player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 100, 1, false, false)); // Aplica resistência ao fogo
 
-            // Cria chamas onde o jogador está, mas apenas em blocos que não sejam inflamáveis
-            player.getLocation().getBlock().setType(Material.FIRE);
+        if (boots != null && (boots.isSimilar(createFireBoots())
+                || boots.isSimilar(createwWaterIceBoots()))) {
+            player.setWalkSpeed(0.7f); // Aumenta a velocidade de movimento
+
+            // Inicia a tarefa que mantém os efeitos
+            new BootsEffectTask(player, boots).runTaskTimer(instance, 0L, 20L * 5); // A cada 5 segundos
         } else {
-            player.setWalkSpeed(0.2f); // Restaura a velocidade de caminhada padrão se não estiver usando as botas
+            player.setWalkSpeed(0.2f); // Restaura a velocidade de caminhada padrão
         }
+
     }
+
+  
+
+
 
     @EventHandler
     public void onPlayerMoveBorder(PlayerMoveEvent event) {
@@ -89,6 +94,7 @@ public class PlayerEventServerListener implements Listener {
             event.getPlayer().getInventory().addItem(createSpeedInvisibilityItem());
             event.getPlayer().getInventory().addItem(createLightningProtectionItem());
             event.getPlayer().getInventory().addItem(createFireBoots());
+            event.getPlayer().getInventory().addItem(createwWaterIceBoots());
 
         }
         for (PotionEffect activePotionEffect : event.getPlayer().getActivePotionEffects()) {
@@ -223,6 +229,8 @@ public class PlayerEventServerListener implements Listener {
             }
             event.setCancelled(true);
         }
+
+
     }
 
     // Método para atualizar a sidebar

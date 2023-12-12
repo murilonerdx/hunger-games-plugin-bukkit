@@ -67,9 +67,12 @@ public class MonsterServerListener implements Listener {
             return createItemCustomCure();
         } else if (chance >= 90) { // Adicional de 40%, totalizando 80%
             return createItemCustomSword();
-        } else if (chance >= 70 && chance <= 85) { // Adicional de 40%, totalizando 80%
-            return createFireBoots();
-        } else {
+        } else if (chance >= 70 && chance <= 80) { // Adicional de 40%, totalizando 80%
+            return createFireBoots() ;
+        } else if (chance >= 81 && chance <= 85) { // Adicional de 40%, totalizando 80%
+            return createFireBoots() ;
+        }
+        else {
             return null; // 20% de chance de não gerar um item raro
         }
     }

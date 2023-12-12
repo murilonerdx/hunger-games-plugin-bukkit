@@ -1,6 +1,7 @@
 package org.murilonerdx.scheduler;
 
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Player;
@@ -84,6 +85,8 @@ public class EventScheduler extends BukkitRunnable {
             }
         }
     }
+
+
 
     private void executeEvent(String event) {
         Location location = findHighestDensityLocation();

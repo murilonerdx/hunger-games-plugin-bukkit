@@ -86,6 +86,19 @@ public class ItemsUtils {
         return boots;
     }
 
+    public static ItemStack createwWaterIceBoots() {
+        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+        LeatherArmorMeta meta = (LeatherArmorMeta) boots.getItemMeta();
+
+        meta.setColor(Color.BLUE); // Definir a cor para vermelho
+        meta.setDisplayName("Botas de Gelo");
+        meta.addEnchant(Enchantment.WATER_WORKER, 40, true);
+        meta.addEnchant(Enchantment.LUCK, 40, true);
+        boots.setItemMeta(meta);
+
+        return boots;
+    }
+
     public static ItemStack createItemCustomSword() {
         ItemStack item = new ItemStack(Material.WOODEN_SWORD); // Tipo de item
         ItemMeta meta = item.getItemMeta();
