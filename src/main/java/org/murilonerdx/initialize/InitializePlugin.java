@@ -9,10 +9,14 @@ import org.murilonerdx.commander.EnterGameCommand;
 import org.murilonerdx.commander.PunishCommand;
 import org.murilonerdx.commander.StartEnterGameCommand;
 import org.murilonerdx.commander.StartGameCommand;
+import org.murilonerdx.listener.CursedItemListener;
+import org.murilonerdx.listener.MonsterServerListener;
 import org.murilonerdx.listener.PlayerEventServerListener;
 import org.murilonerdx.scheduler.EventScheduler;
 
 import java.util.Objects;
+
+import static org.murilonerdx.utils.ItemsUtils.recipeCustomCraft;
 
 
 public class InitializePlugin<T extends JavaPlugin> {
@@ -28,10 +32,17 @@ public class InitializePlugin<T extends JavaPlugin> {
         Objects.requireNonNull(principal.getCommand("punish")).setExecutor(new PunishCommand());
         Objects.requireNonNull(principal.getCommand("enter-start")).setExecutor(new StartEnterGameCommand());
 
+        initialCraft();
+    }
+
+    public void initialCraft(){
+        recipeCustomCraft();
     }
 
     public void registerServerEvents(){
         principal.getServer().getPluginManager().registerEvents(new PlayerEventServerListener(), principal);
+        principal.getServer().getPluginManager().registerEvents(new MonsterServerListener(), principal);
+        principal.getServer().getPluginManager().registerEvents(new CursedItemListener(), principal);
     }
 
     public void schedulesThreadsView(){

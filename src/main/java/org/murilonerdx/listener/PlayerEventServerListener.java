@@ -5,12 +5,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -28,6 +26,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.murilonerdx.Hungergames.*;
+import static org.murilonerdx.utils.ItemsUtils.createLightningProtectionItem;
+import static org.murilonerdx.utils.ItemsUtils.createSpeedInvisibilityItem;
 
 
 public class PlayerEventServerListener implements Listener {
@@ -71,8 +71,11 @@ public class PlayerEventServerListener implements Listener {
             // Cria o item que você quer dar (por exemplo, uma bússola)
             ItemStack bucket = new ItemStack(Material.BUCKET, 1);
 
+
             // Dá o item ao jogador
             event.getPlayer().getInventory().addItem(bucket);
+            event.getPlayer().getInventory().addItem(createSpeedInvisibilityItem());
+            event.getPlayer().getInventory().addItem(createLightningProtectionItem());
         }
         for (PotionEffect activePotionEffect : event.getPlayer().getActivePotionEffects()) {
             event.getPlayer().removePotionEffect(activePotionEffect.getType());
@@ -128,6 +131,33 @@ public class PlayerEventServerListener implements Listener {
 //        event.getPlayer().kickPlayer(ChatColor.RED + "Você morreu para esse universo dentro do minecraft, foi banido permanentemente");
 
 //        event.getPlayer().banPlayerIP("Adeus para sempre aproveite sua realidade no mundo real");
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        System.out.println("Evento causado dano : " + event.getCause());
+        if (event.getEntity() instanceof Player) {
+
+            Player player = (Player) event.getEntity();
+            System.out.println("Contains player item : " + player.getInventory().contains(createLightningProtectionItem()));
+            System.out.println("Contains player item : " + player.getInventory().toString());
+
+            if (player.getInventory().contains(createLightningProtectionItem()) && event.getCause() == EntityDamageEvent.DamageCause.LIGHTNING ||
+                    player.getInventory().contains(createLightningProtectionItem()) && event.getCause() == EntityDamageEvent.DamageCause.ENTITY_EXPLOSION ||
+                    player.getInventory().contains(createLightningProtectionItem()) && event.getCause() == EntityDamageEvent.DamageCause.LAVA
+            ) {
+                event.setCancelled(true); // Cancela o dano de raio
+            }
+        }
+    }
+
+    @EventHandler
+    public void onConsume(PlayerItemConsumeEvent event) {
+        if (event.getItem().equals(createSpeedInvisibilityItem())) {
+            // Aplica os efeitos por 2 minutos
+            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 2400, 1));
+            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 2400, 1));
+        }
     }
 
     // Método para criar e abrir o inventário GUI

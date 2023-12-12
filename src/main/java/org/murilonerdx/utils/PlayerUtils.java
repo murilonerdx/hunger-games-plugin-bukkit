@@ -19,6 +19,9 @@ import org.murilonerdx.Hungergames;
 
 import java.util.*;
 
+import static org.murilonerdx.utils.ItemsUtils.createLightningProtectionItem;
+import static org.murilonerdx.utils.ItemsUtils.createSpeedInvisibilityItem;
+
 
 public class PlayerUtils {
 
@@ -234,7 +237,8 @@ public class PlayerUtils {
                     new ItemStack(Material.DARK_OAK_WOOD, 44),
                     new ItemStack(Material.DIAMOND, 18),
                     new ItemStack(Material.ARROW, 21),
-                    new ItemStack(Material.BOW, 1)
+                    new ItemStack(Material.BOW, 1),
+                    createLightningProtectionItem()
             );
             case "KIT-FULL" -> List.of(
                     new ItemStack(Material.DIAMOND_SWORD, 1),
@@ -251,7 +255,8 @@ public class PlayerUtils {
                     new ItemStack(Material.GOLDEN_APPLE, 18),
                     new ItemStack(Material.BEETROOT_SOUP, 18),
                     new ItemStack(Material.MELON, 28),
-                    new ItemStack(Material.EGG, 18)
+                    new ItemStack(Material.EGG, 18),
+                    createSpeedInvisibilityItem()
             );
 
             case "KIT-BASICO" -> List.of(

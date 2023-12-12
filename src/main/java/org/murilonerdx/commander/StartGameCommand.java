@@ -7,11 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.murilonerdx.Hungergames;
-import org.murilonerdx.SafeZoneHandler;
 
 import java.util.UUID;
-
-import static org.murilonerdx.Hungergames.loadWorld;
 
 public class StartGameCommand implements CommandExecutor {
     @Override
