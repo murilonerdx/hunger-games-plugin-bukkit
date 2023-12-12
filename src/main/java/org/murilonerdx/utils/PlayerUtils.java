@@ -58,9 +58,9 @@ public class PlayerUtils {
         }
     }
 
-    private static void createIceCube(World world, Location center) {
+    public static void createIceCube(World world, Location center) {
         for (int x = -1; x <= 1; x++) {
-            for (int y = -1; y <= 1; y++) {
+            for (int y = -5; y <= 1; y++) {
                 for (int z = -1; z <= 1; z++) {
                     Location loc = center.clone().add(x, y, z);
                     if (world.getBlockAt(loc).getType() == Material.AIR) {
@@ -120,16 +120,6 @@ public class PlayerUtils {
             }
         }
         return false;
-    }
-
-    public void onPlayerJoin(Player event) {
-        Player player = event.getPlayer();
-        World world = player.getWorld();
-        WorldBorder border = world.getWorldBorder();
-
-        // Obtenha uma localização aleatória dentro da borda
-        Location randomLocation = getRandomLocationWithinBorder(world, border);
-        player.teleport(randomLocation);
     }
 
     private Location getRandomLocationWithinBorder(World world, WorldBorder border) {

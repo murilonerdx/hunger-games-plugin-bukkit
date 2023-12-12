@@ -5,6 +5,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.murilonerdx.Hungergames;
 
 
@@ -60,5 +61,49 @@ public class ItemsUtils {
 
     public static boolean selectItems(Material material) {
         return isArmor(material) || isWeapon(material) ;
+    }
+
+    public static ItemStack createItemCustomCure() {
+        ItemStack item = new ItemStack(Material.BREAD); // Tipo de item
+        ItemMeta meta = item.getItemMeta();
+        meta.addEnchant(
+                Enchantment.DURABILITY, 5, true
+        );
+        meta.setDisplayName("This bread will bring you the cure you need");
+        item.setItemMeta(meta);
+        return item;
+    }
+
+    public static ItemStack createFireBoots() {
+        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+        LeatherArmorMeta meta = (LeatherArmorMeta) boots.getItemMeta();
+
+        meta.setColor(Color.RED); // Definir a cor para vermelho
+        meta.setDisplayName("Botas de Fogo");
+        meta.addEnchant(Enchantment.PROTECTION_FIRE, 40, true);
+        boots.setItemMeta(meta);
+
+        return boots;
+    }
+
+    public static ItemStack createItemCustomSword() {
+        ItemStack item = new ItemStack(Material.WOODEN_SWORD); // Tipo de item
+        ItemMeta meta = item.getItemMeta();
+        meta.addEnchant(
+                Enchantment.DURABILITY, 5, true
+        );
+        meta.addEnchant(
+                Enchantment.KNOCKBACK, 5, true
+        );
+        meta.addEnchant(
+                Enchantment.FIRE_ASPECT, 5, true
+        );
+
+        meta.addEnchant(
+                Enchantment.DAMAGE_UNDEAD, 5, true
+        );
+        meta.setDisplayName("This sword is stronger than it looks");
+        item.setItemMeta(meta);
+        return item;
     }
 }

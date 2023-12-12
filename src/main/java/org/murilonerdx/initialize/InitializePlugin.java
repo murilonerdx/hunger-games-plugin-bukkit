@@ -5,10 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.murilonerdx.Hungergames;
-import org.murilonerdx.commander.EnterGameCommand;
-import org.murilonerdx.commander.PunishCommand;
-import org.murilonerdx.commander.StartEnterGameCommand;
-import org.murilonerdx.commander.StartGameCommand;
+import org.murilonerdx.commander.*;
 import org.murilonerdx.listener.CursedItemListener;
 import org.murilonerdx.listener.MonsterServerListener;
 import org.murilonerdx.listener.PlayerEventServerListener;
@@ -31,6 +28,8 @@ public class InitializePlugin<T extends JavaPlugin> {
         Objects.requireNonNull(principal.getCommand("startgame")).setExecutor(new StartGameCommand());
         Objects.requireNonNull(principal.getCommand("punish")).setExecutor(new PunishCommand());
         Objects.requireNonNull(principal.getCommand("enter-start")).setExecutor(new StartEnterGameCommand());
+        Objects.requireNonNull(principal.getCommand("pause")).setExecutor(new PauseGameCommand());
+        Objects.requireNonNull(principal.getCommand("continue")).setExecutor(new ContinueGameCommand());
 
         initialCraft();
     }

@@ -1,6 +1,7 @@
 package org.murilonerdx.listener;
 
 import org.bukkit.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -31,20 +32,45 @@ import java.util.stream.Collectors;
 
 import static org.murilonerdx.Hungergames.bossBar;
 import static org.murilonerdx.Hungergames.instance;
+import static org.murilonerdx.utils.EntityUtils.*;
 import static org.murilonerdx.utils.ItemsUtils.*;
 
 
 public class MonsterServerListener implements Listener {
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
-        if(Hungergames.startingGame){
+        if (Hungergames.startingGame) {
             LivingEntity entity = event.getEntity();
-
+            explodeOnDeath(entity, 1);
+//            deathStrikeLightning(event.getEntity(), 1);
             // Verifica se a entidade é um monstro
             if (entity instanceof Monster) {
-                // Gera um item aleatório e o adiciona aos drops
-                event.getDrops().add(generateRandomItem());
+                // Tenta gerar um item raro
+                ItemStack rareItem = generateRareItem();
+                if (rareItem != null) {
+                    event.getDrops().add(rareItem);
+                } else {
+                    // Se nenhum item raro for gerado, gera um item comum
+                    event.getDrops().add(generateRandomItem());
+                }
             }
+        }
+    }
+
+    private ItemStack generateRareItem() {
+        Random rand = new Random();
+        int chance = rand.nextInt(100) + 1; // Gera um número entre 1 e 100
+
+        if (chance >= 10 && chance <= 30) {
+            return createLightningProtectionItem(); // 10% de chance
+        } else if (chance >= 40 && chance <= 60) { // Adicional de 30%, totalizando 40%
+            return createItemCustomCure();
+        } else if (chance >= 90) { // Adicional de 40%, totalizando 80%
+            return createItemCustomSword();
+        } else if (chance >= 70 && chance <= 85) { // Adicional de 40%, totalizando 80%
+            return createFireBoots();
+        } else {
+            return null; // 20% de chance de não gerar um item raro
         }
     }
 

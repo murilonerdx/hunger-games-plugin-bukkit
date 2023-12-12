@@ -19,10 +19,21 @@ commands:
     description: Fazer jogador voltar a jogar
     usage: /punish <player>
     permission: hungergames.enter
+  pause:
+    description: Pausar o jogo caso algo aconteça
+    usage: /pause <player> <motive>
+    permission: hungergames.pause
+  continue:
+    description: Continuar
+    usage: /continue <player>
+    permission: hungergames.pause
 permissions:
   hungergames.startgame:
     description: Você inicia os jogos mortais
     default: op
   hungergames.enter-start:
     description: Você inicia os jogos mortais
+    default: op
+  hungergames.pause:
+    description: Pausar jogo
     default: op

@@ -18,13 +18,13 @@ public final class Hungergames extends JavaPlugin {
     public static Scoreboard board;
     public static Objective objective;
     public static List<UUID> playersInGame = new ArrayList<>();
-    public static HashMap<UUID, Location> playersInGameLocation = new HashMap<>();
     public static List<UUID> deadPlayers = new ArrayList<>();
     public static boolean gameStartingEnder = false;
     public static boolean startingGame = false;
     public InitializePlugin<Hungergames> initializePlugin;
     public static BossBar bossBar;
     public static Map<UUID, Long> lastMovementTimes = new HashMap<>();
+    public static Map<UUID, Double> playerGiftMoney = new HashMap<>();
 
     @Override
     public void onEnable() {

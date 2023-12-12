@@ -1,6 +1,8 @@
 package org.murilonerdx.listener;
 
 import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,8 +28,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.murilonerdx.Hungergames.*;
-import static org.murilonerdx.utils.ItemsUtils.createLightningProtectionItem;
-import static org.murilonerdx.utils.ItemsUtils.createSpeedInvisibilityItem;
+import static org.murilonerdx.utils.ItemsUtils.*;
+import static org.murilonerdx.utils.PlayerUtils.createIceCube;
 
 
 public class PlayerEventServerListener implements Listener {
@@ -48,7 +50,18 @@ public class PlayerEventServerListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        Hungergames.setLastMovementTime(event.getPlayer());
+        Player player = event.getPlayer();
+        ItemStack boots = player.getInventory().getBoots();
+
+        if (boots != null && boots.isSimilar(createFireBoots())) {
+            player.setWalkSpeed(0.7f); // Aumenta a velocidade de movimento
+            player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 100, 1, false, false)); // Aplica resistência ao fogo
+
+            // Cria chamas onde o jogador está, mas apenas em blocos que não sejam inflamáveis
+            player.getLocation().getBlock().setType(Material.FIRE);
+        } else {
+            player.setWalkSpeed(0.2f); // Restaura a velocidade de caminhada padrão se não estiver usando as botas
+        }
     }
 
     @EventHandler
@@ -71,11 +84,12 @@ public class PlayerEventServerListener implements Listener {
             // Cria o item que você quer dar (por exemplo, uma bússola)
             ItemStack bucket = new ItemStack(Material.BUCKET, 1);
 
-
             // Dá o item ao jogador
             event.getPlayer().getInventory().addItem(bucket);
             event.getPlayer().getInventory().addItem(createSpeedInvisibilityItem());
             event.getPlayer().getInventory().addItem(createLightningProtectionItem());
+            event.getPlayer().getInventory().addItem(createFireBoots());
+
         }
         for (PotionEffect activePotionEffect : event.getPlayer().getActivePotionEffects()) {
             event.getPlayer().removePotionEffect(activePotionEffect.getType());
@@ -135,7 +149,6 @@ public class PlayerEventServerListener implements Listener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
-        System.out.println("Evento causado dano : " + event.getCause());
         if (event.getEntity() instanceof Player) {
 
             Player player = (Player) event.getEntity();
@@ -158,7 +171,16 @@ public class PlayerEventServerListener implements Listener {
             event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 2400, 1));
             event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 2400, 1));
         }
+
+        if (event.getItem().equals(createItemCustomCure())) {
+            // Aplica os efeitos por 2 minutos
+            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 2400, 2));
+            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.HEAL, 2400, 1));
+            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.HERO_OF_THE_VILLAGE, 2400, 1));
+            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 800, 3));
+        }
     }
+
 
     // Método para criar e abrir o inventário GUI
     @EventHandler
@@ -179,6 +201,12 @@ public class PlayerEventServerListener implements Listener {
             }
 
             player.openInventory(gui);
+        }
+
+        if (event.getItem() != null && event.getItem().equals(createItemCustomSword())
+                && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+            createIceCube(event.getClickedBlock().getWorld(), event.getClickedBlock().getLocation());
+
         }
     }
 
@@ -226,9 +254,10 @@ public class PlayerEventServerListener implements Listener {
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         objective.getScore(ChatColor.RED + "Vida").setScore((int) target.getHealth());
-        objective.getScore(ChatColor.GREEN + "Fome").setScore( target.getFoodLevel());
+        objective.getScore(ChatColor.GREEN + "Fome").setScore(target.getFoodLevel());
         objective.getScore(ChatColor.YELLOW + "XP").setScore((int) target.getExp());
-        objective.getScore(ChatColor.YELLOW +  target.getName()).setScore(target.getClientViewDistance());
+        objective.getScore(ChatColor.YELLOW + target.getName()).setScore(target.getClientViewDistance());
         // Adicione mais informações aqui se necessário
     }
+
 }

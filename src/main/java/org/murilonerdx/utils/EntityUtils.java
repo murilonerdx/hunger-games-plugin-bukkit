@@ -272,7 +272,6 @@ public class EntityUtils {
 
     // Método para fazer uma entidade explodir ao morrer
     public static void explodeOnDeath(LivingEntity entity, float power) {
-        entity.setHealth(0);
         entity.getWorld().createExplosion(entity.getLocation(), power);
     }
 }
