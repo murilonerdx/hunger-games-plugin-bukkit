@@ -43,4 +43,22 @@ public class ItemsUtils {
         // Registra a receita
         Bukkit.addRecipe(recipe);
     }
+
+    public static boolean isArmor(Material material) {
+        return material.name().endsWith("_HELMET") ||
+                material.name().endsWith("_CHESTPLATE") ||
+                material.name().endsWith("_LEGGINGS") ||
+                material.name().endsWith("_BOOTS");
+    }
+
+    public static boolean isWeapon(Material material) {
+        return material.name().endsWith("_SWORD") ||
+                material.name().endsWith("_AXE") ||
+                material.name().endsWith("_BOW") ||
+                material.name().endsWith("_CROSSBOW");
+    }
+
+    public static boolean selectItems(Material material) {
+        return isArmor(material) || isWeapon(material) ;
+    }
 }

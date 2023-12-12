@@ -23,14 +23,15 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.murilonerdx.Hungergames;
+import org.murilonerdx.utils.ItemsUtils;
 
 import java.text.ParseException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.murilonerdx.Hungergames.bossBar;
 import static org.murilonerdx.Hungergames.instance;
-import static org.murilonerdx.utils.ItemsUtils.createLightningProtectionItem;
-import static org.murilonerdx.utils.ItemsUtils.createSpeedInvisibilityItem;
+import static org.murilonerdx.utils.ItemsUtils.*;
 
 
 public class MonsterServerListener implements Listener {
@@ -49,12 +50,12 @@ public class MonsterServerListener implements Listener {
 
     private ItemStack generateRandomItem() {
         // Obtém todos os valores de Material
-        Material[] materials = Material.values();
+        List<Material> materials =  Arrays.stream(Material.values()).filter(ItemsUtils::selectItems).toList();
 
         // Escolhe um Material aleatório, garantindo que é um item (não bloqueio ou ar)
         Material randomMaterial;
         do {
-            randomMaterial = materials[new Random().nextInt(materials.length)];
+            randomMaterial = materials.get(new Random().nextInt(materials.size()));
         } while (!randomMaterial.isItem() || randomMaterial.isAir());
 
         // Retorna um novo ItemStack do material escolhido
