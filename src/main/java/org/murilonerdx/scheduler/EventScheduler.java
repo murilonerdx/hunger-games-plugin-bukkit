@@ -42,7 +42,7 @@ public class EventScheduler extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (startingGame) {
+        if (startingGame && !gamePause) {
             getServer().getScheduler().scheduleSyncRepeatingTask(Hungergames.instance, this::checkForImmobilePlayers, 20L, 20L);
             getServer().getScheduler().scheduleSyncRepeatingTask(Hungergames.instance, () -> {
                 for (UUID uuid : Hungergames.playersInGame) {

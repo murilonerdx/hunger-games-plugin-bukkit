@@ -26,6 +26,7 @@ public class PauseGameCommand implements CommandExecutor {
                 System.out.println("Pessoas cadastradas " + playersInGame.toString());
                 Hungergames.startingGame = false;
                 Hungergames.gameStartingEnder = false;
+                gamePause = true;
                 if (strings.length == 2) {
                     Player player = Bukkit.getPlayer(strings[0]);
                     if (player != null) {
@@ -42,7 +43,6 @@ public class PauseGameCommand implements CommandExecutor {
                     }
                 }
                 if (strings.length == 1) {
-                    gamePause = true;
                     playersInGame
                             .forEach(
                                     player -> {
@@ -61,7 +61,6 @@ public class PauseGameCommand implements CommandExecutor {
                 }
 
                 if (strings.length == 0) {
-                    gamePause = true;
                     playersInGame
                             .forEach(
                                     player -> {

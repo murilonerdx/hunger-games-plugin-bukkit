@@ -14,10 +14,8 @@ public class StartGameCommand implements CommandExecutor {
     @Override
     public boolean onCommand( CommandSender commandSender, Command command, String s, String[] strings) {
         if (commandSender instanceof Player) {
-            if(!Hungergames.startingGame){
-                World world = Bukkit.getServer().getWorld("hurger-games");
-
-                world = Bukkit.getServer().createWorld(new WorldCreator("hurger-games"));
+            if(!Hungergames.startingGame && !Hungergames.gamePause){
+                World world = Bukkit.getServer().createWorld(new WorldCreator("hurger-games"));
 
                 WorldBorder border = world.getSpawnLocation().getWorld().getWorldBorder();
                 border.setCenter(new Location(world, 0, 100, 0)); // Centro da borda
@@ -37,9 +35,9 @@ public class StartGameCommand implements CommandExecutor {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        if(Hungergames.startingGame){
+                        if(Hungergames.startingGame && !Hungergames.gamePause){
                             double newSize = border.getSize() * 0.9; // Reduz em 10%
-                            if (newSize >= 100) { // Tamanho mínimo
+                            if (newSize >= 50) { // Tamanho mínimo
                                 border.setSize(newSize, 60); // Reduz a borda gradualmente
                             } else {
                                 this.cancel(); // Para a tarefa quando atingir o tamanho mínimo
