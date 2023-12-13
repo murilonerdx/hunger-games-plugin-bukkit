@@ -1,9 +1,6 @@
 package org.murilonerdx.scheduler;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -19,8 +16,7 @@ import java.util.*;
 
 import static org.bukkit.Bukkit.getServer;
 import static org.murilonerdx.Hungergames.*;
-import static org.murilonerdx.utils.ItemsUtils.createFireBoots;
-import static org.murilonerdx.utils.ItemsUtils.createwWaterIceBoots;
+import static org.murilonerdx.utils.ItemsUtils.*;
 import static org.murilonerdx.utils.PlayerUtils.*;
 
 public class BootsEffectTask extends BukkitRunnable {
@@ -48,13 +44,22 @@ public class BootsEffectTask extends BukkitRunnable {
     private void applyBootsEffects(Player player, ItemStack boots) {
         if (boots.isSimilar(createFireBoots())) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 200, 1, true, true));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 1, true, true));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 200, 1, true, true));
             // Adicione outros efeitos conforme necessário
             player.getLocation().getBlock().setType(Material.FIRE);
         } else if (boots.isSimilar(createwWaterIceBoots())) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 200, 1, false, false));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 200, 1, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 200, 3, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 200, 100, false, false));
             // Adicione outros efeitos conforme necessário
             transformBlocksAroundPlayer(player);
+        } else if (boots.isSimilar(createJumpBoots())) {
+            player.playEffect(EntityEffect.ARROW_PARTICLES);
+            player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, 200, 20, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, 200, 1, false, false));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 2, false, false));
+            // Adicione outros efeitos conforme necessário
         }
     }
 

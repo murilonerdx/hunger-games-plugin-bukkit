@@ -8,6 +8,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.murilonerdx.Hungergames;
 
+import java.util.Collections;
+
 
 public class ItemsUtils {
     // Criar o item personalizado
@@ -81,6 +83,41 @@ public class ItemsUtils {
         meta.setColor(Color.RED); // Definir a cor para vermelho
         meta.setDisplayName("Botas de Fogo");
         meta.addEnchant(Enchantment.PROTECTION_FIRE, 40, true);
+        boots.setItemMeta(meta);
+
+        return boots;
+    }
+
+    public static ItemStack createSpecialBow(String type) {
+        ItemStack arrow = new ItemStack(Material.BOW, 1);
+        ItemMeta meta = arrow.getItemMeta();
+
+        meta.setDisplayName(type);
+        meta.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&', "&7Tipo: " + type)));
+        arrow.setItemMeta(meta);
+
+        return arrow;
+    }
+
+    public static ItemStack createSpecialArrow(String type, int amount) {
+        ItemStack arrow = new ItemStack(Material.ARROW, amount);
+        ItemMeta meta = arrow.getItemMeta();
+
+        meta.setDisplayName(type);
+        meta.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&', "&7Tipo: " + type)));
+        arrow.setItemMeta(meta);
+
+        return arrow;
+    }
+
+    public static ItemStack createJumpBoots() {
+        ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+        LeatherArmorMeta meta = (LeatherArmorMeta) boots.getItemMeta();
+
+        meta.setColor(Color.WHITE); // Definir a cor para vermelho
+        meta.setDisplayName("Botas do Ar");
+        meta.addEnchant(Enchantment.PROTECTION_PROJECTILE, 40, true);
+        meta.addEnchant(Enchantment.PROTECTION_FALL, 200, true);
         boots.setItemMeta(meta);
 
         return boots;

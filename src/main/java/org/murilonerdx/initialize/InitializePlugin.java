@@ -7,6 +7,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.murilonerdx.Hungergames;
 import org.murilonerdx.commander.*;
 import org.murilonerdx.listener.CursedItemListener;
+import org.murilonerdx.listener.CustomArrowListener;
 import org.murilonerdx.listener.MonsterServerListener;
 import org.murilonerdx.listener.PlayerEventServerListener;
 import org.murilonerdx.scheduler.EventScheduler;
@@ -42,6 +43,7 @@ public class InitializePlugin<T extends JavaPlugin> {
         principal.getServer().getPluginManager().registerEvents(new PlayerEventServerListener(), principal);
         principal.getServer().getPluginManager().registerEvents(new MonsterServerListener(), principal);
         principal.getServer().getPluginManager().registerEvents(new CursedItemListener(), principal);
+        principal.getServer().getPluginManager().registerEvents(new CustomArrowListener(), principal);
     }
 
     public void schedulesThreadsView(){

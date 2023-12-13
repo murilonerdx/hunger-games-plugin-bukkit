@@ -19,8 +19,7 @@ import org.murilonerdx.Hungergames;
 
 import java.util.*;
 
-import static org.murilonerdx.utils.ItemsUtils.createLightningProtectionItem;
-import static org.murilonerdx.utils.ItemsUtils.createSpeedInvisibilityItem;
+import static org.murilonerdx.utils.ItemsUtils.*;
 
 
 public class PlayerUtils {
@@ -228,7 +227,10 @@ public class PlayerUtils {
                     new ItemStack(Material.DIAMOND, 18),
                     new ItemStack(Material.ARROW, 21),
                     new ItemStack(Material.BOW, 1),
-                    createLightningProtectionItem()
+                    createLightningProtectionItem(),
+                    createJumpBoots(),
+                    createSpecialBow("IceWallBow"),
+                    createSpecialArrow("IceWallArrow", 18)
             );
             case "KIT-FULL" -> List.of(
                     new ItemStack(Material.DIAMOND_SWORD, 1),
@@ -239,14 +241,19 @@ public class PlayerUtils {
                     new ItemStack(Material.DARK_OAK_WOOD, 64),
                     new ItemStack(Material.DIAMOND, 31),
                     new ItemStack(Material.ARROW, 61),
-                    new ItemStack(Material.BOW, 1)
+                    new ItemStack(Material.BOW, 1),
+                    createFireBoots()
             );
             case "KIT-CURA" -> List.of(
                     new ItemStack(Material.GOLDEN_APPLE, 18),
                     new ItemStack(Material.BEETROOT_SOUP, 18),
                     new ItemStack(Material.MELON, 28),
                     new ItemStack(Material.EGG, 18),
-                    createSpeedInvisibilityItem()
+                    createSpeedInvisibilityItem(), 
+                    createItemCustomCure(),
+                    createItemCustomCure(),
+                    createSpecialBow("LightningBow"),
+                    createSpecialArrow("LightningArrow", 18)
             );
 
             case "KIT-BASICO" -> List.of(
@@ -255,7 +262,10 @@ public class PlayerUtils {
                     new ItemStack(Material.MELON, 28),
                     new ItemStack(Material.EGG, 5),
                     new ItemStack(Material.ARROW, 34),
-                    new ItemStack(Material.BOW, 1)
+                    new ItemStack(Material.BOW, 1),
+                    createwWaterIceBoots(),
+                    createSpecialBow("ExplosiveBow"),
+                    createSpecialArrow("ExplosiveArrow", 18)
             );
             default -> null;
         };

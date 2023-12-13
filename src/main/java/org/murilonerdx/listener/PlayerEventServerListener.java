@@ -54,7 +54,11 @@ public class PlayerEventServerListener implements Listener {
 
 
         if (boots != null && (boots.isSimilar(createFireBoots())
-                || boots.isSimilar(createwWaterIceBoots()))) {
+                || boots.isSimilar(createwWaterIceBoots()) || boots.isSimilar(createJumpBoots())
+
+        )
+
+        ) {
             player.setWalkSpeed(0.7f); // Aumenta a velocidade de movimento
 
             // Inicia a tarefa que mantém os efeitos
@@ -64,10 +68,6 @@ public class PlayerEventServerListener implements Listener {
         }
 
     }
-
-  
-
-
 
     @EventHandler
     public void onPlayerMoveBorder(PlayerMoveEvent event) {
@@ -95,8 +95,9 @@ public class PlayerEventServerListener implements Listener {
             event.getPlayer().getInventory().addItem(createLightningProtectionItem());
             event.getPlayer().getInventory().addItem(createFireBoots());
             event.getPlayer().getInventory().addItem(createwWaterIceBoots());
-
+            event.getPlayer().getInventory().addItem(createJumpBoots());
         }
+
         for (PotionEffect activePotionEffect : event.getPlayer().getActivePotionEffects()) {
             event.getPlayer().removePotionEffect(activePotionEffect.getType());
         }
