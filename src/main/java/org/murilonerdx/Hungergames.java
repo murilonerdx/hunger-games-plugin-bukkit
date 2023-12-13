@@ -21,6 +21,7 @@ public final class Hungergames extends JavaPlugin {
     public static List<UUID> deadPlayers = new ArrayList<>();
     public static boolean gameStartingEnder = false;
     public static boolean startingGame = false;
+    public static boolean gamePause = false;
     public InitializePlugin<Hungergames> initializePlugin;
     public static BossBar bossBar;
     public static Map<UUID, Long> lastMovementTimes = new HashMap<>();

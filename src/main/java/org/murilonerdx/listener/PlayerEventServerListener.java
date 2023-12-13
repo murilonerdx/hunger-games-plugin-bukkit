@@ -70,6 +70,13 @@ public class PlayerEventServerListener implements Listener {
     }
 
     @EventHandler
+    public void onPlayerMoveOrPause(PlayerMoveEvent event) {
+        if (gamePause) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
     public void onPlayerMoveBorder(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         World world = player.getWorld();

@@ -25,7 +25,7 @@ commands:
     permission: hungergames.pause
   continue:
     description: Continuar
-    usage: /continue <player>
+    usage: /continue
     permission: hungergames.pause
 permissions:
   hungergames.startgame:
