@@ -30,12 +30,14 @@ public class EventScheduler extends BukkitRunnable {
         long currentTime = System.currentTimeMillis();
         for (UUID uuid : Hungergames.playersInGame) {
             Player player = Bukkit.getPlayer(uuid);
-            long lastMoveTime = lastMovementTimes.getOrDefault(player.getUniqueId(), 0L);
-            if (currentTime - lastMoveTime > 5 * 60 * 1000) { // 5 minutos em milissegundos
-                // Cai um raio no jogador
-                player.getWorld().strikeLightning(player.getLocation());
-                // Reseta o contador de tempo para o jogador
-                setLastMovementTime(player);
+            if(player != null){
+                long lastMoveTime = lastMovementTimes.getOrDefault(player.getUniqueId(), 0L);
+                if (currentTime - lastMoveTime > 5 * 60 * 1000) { // 5 minutos em milissegundos
+                    // Cai um raio no jogador
+                    player.getWorld().strikeLightning(player.getLocation());
+                    // Reseta o contador de tempo para o jogador
+                    setLastMovementTime(player);
+                }
             }
         }
     }

@@ -24,6 +24,7 @@ import org.murilonerdx.scheduler.BootsEffectTask;
 
 
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.murilonerdx.Hungergames.*;
@@ -91,6 +92,18 @@ public class PlayerEventServerListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) throws ParseException {
+        Optional<UUID> first = Hungergames.deadPlayers.stream().filter(
+                t -> t == event.getPlayer().getUniqueId()
+        ).findFirst();
+
+        if (first.isPresent()) {
+            Bukkit.getBanList(BanList.Type.IP).addBan(event.getPlayer().getServer().getIp(),
+                    ChatColor.RED + "Adeus para sempre aproveite sua realidade no mundo real.",
+                    null,
+                    null);
+            event.getPlayer().kickPlayer(ChatColor.RED + "Você morreu para esse universo dentro do minecraft, foi banido permanentemente");
+        }
+
         event.getPlayer().getInventory().clear();
         if (event.getPlayer().isOp()) {
             // Cria o item que você quer dar (por exemplo, uma bússola)
@@ -108,18 +121,6 @@ public class PlayerEventServerListener implements Listener {
         for (PotionEffect activePotionEffect : event.getPlayer().getActivePotionEffects()) {
             event.getPlayer().removePotionEffect(activePotionEffect.getType());
         }
-
-        Optional<UUID> first = Hungergames.deadPlayers.stream().filter(
-                t -> t == event.getPlayer().getUniqueId()
-        ).findFirst();
-
-        if (first.isPresent()) {
-            Bukkit.getBanList(BanList.Type.IP).addBan(event.getPlayer().getServer().getIp(),
-                    ChatColor.RED + "Adeus para sempre aproveite sua realidade no mundo real.",
-                    null,
-                    null);
-            event.getPlayer().kickPlayer(ChatColor.RED + "Você morreu para esse universo dentro do minecraft, foi banido permanentemente");
-        }
     }
 
     @EventHandler
@@ -135,7 +136,8 @@ public class PlayerEventServerListener implements Listener {
 
         if (uuid1.isPresent()) {
             Player player1 = Bukkit.getPlayer(uuid1.get());
-            player1.setOp(true);
+            player1.getWorld().setPVP(false);
+            player1.setInvulnerable(true);
         }
         if (Hungergames.playersInGame.isEmpty() || Hungergames.playersInGame.size() == 1) {
             Hungergames.startingGame = false;
@@ -151,14 +153,20 @@ public class PlayerEventServerListener implements Listener {
         event.getEntity().getInventory().clear();
         for (UUID uuid : Hungergames.playersInGame) {
             Player player = Bukkit.getPlayer(uuid);
-            player.sendTitle(ChatColor.RED + "Um jogador morreu!!", ChatColor.YELLOW + "Nomeado de " + player.getName(), 10, 70, 20);
+            player.sendTitle(ChatColor.RED + "Um jogador morreu!!", ChatColor.YELLOW + "Nomeado de " + event.getEntity().getName(), 10, 40, 20);
         }
         event.getEntity().teleport(world.getSpawnLocation());
+        if (playersInGame.size() == 1) {
+            Player player = Bukkit.getPlayer(playersInGame.get(0));
+            player.sendMessage(ChatColor.RED + "Parabéns você venceu o jogo!, seu dinheiro será enviado, cadastresse com o codigo WIN-" + player.getName() + "-" + LocalDateTime.now() + new Random().nextInt());
 
+            gamePause = true;
+            startingGame = false;
+            gameStartingEnder = false;
+        }
 
-//        event.getPlayer().kickPlayer(ChatColor.RED + "Você morreu para esse universo dentro do minecraft, foi banido permanentemente");
-
-//        event.getPlayer().banPlayerIP("Adeus para sempre aproveite sua realidade no mundo real");
+        event.getEntity().kickPlayer(ChatColor.RED + "Você morreu para esse universo dentro do minecraft, foi banido permanentemente");
+        deadPlayers.add(event.getEntity().getUniqueId());
     }
 
     @EventHandler

@@ -14,7 +14,6 @@ commands:
   enter:
     description: Entrar no jogo de jogos mortais
     usage: /enter
-    permission: hungergames.enter
   punish:
     description: Fazer jogador voltar a jogar
     usage: /punish <player>
