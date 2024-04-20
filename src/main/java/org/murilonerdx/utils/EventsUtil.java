@@ -23,6 +23,14 @@ public class EventsUtil {
                 );
 
             }
+
+            case "herobrine" -> {
+                locationWorld.getWorld().getPlayers().forEach(
+                        p -> {
+                            p.sendMessage("Herobrine foi liberado");
+                        }
+                );
+            }
             case "zeus-around" -> {
                 World world = locationWorld.getWorld();
                 Location center = locationWorld;
@@ -42,56 +50,11 @@ public class EventsUtil {
                 }
                 strikePlayerWithLightning(locationWorld);
             }
-
-            case "curse" -> {
-                World world = locationWorld.getWorld();
-                int x = locationWorld.getBlockX();
-                int z = locationWorld.getBlockZ();
-                int y = locationWorld.getWorld().getHighestBlockYAt(x, z);
-
-                Location loc = new Location(locationWorld.getWorld(), x, y, z);
-
-                spawnParticlesNearPlayer(loc, Particle.PORTAL, 2000);
-                applyNauseaEffect(loc);
-
-                List<Entity> entities = new ArrayList<>();
-                for (int i = 0; i < 360; i += 18) { // Spawna em um círculo ao redor do jogador
-                    double angle = Math.toRadians(i);
-                    double xe = locationWorld.getX() + (5 * Math.cos(angle));
-                    double ze = locationWorld.getZ() + (5 * Math.sin(angle));
-                    Location spawnLocation = new Location(world, xe, locationWorld.getY(), ze);
-
-                    Enderman enderman = (Enderman) world.spawnEntity(spawnLocation, EntityType.ENDERMAN);
-                    enderman.setAI(false);
-                    enderman.teleport(spawnLocation.setDirection(locationWorld.toVector().subtract(spawnLocation.toVector())));
-                }
-                freezePlayer(locationWorld, 60L);
-                // Agendar para fazer os Endermans desaparecerem após 4 segundos
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        locationWorld.getWorld().getPlayers().forEach(player -> {
-
-                            for (Entity entity : player.getNearbyEntities(10, 10, 10)) {
-                                if (entity instanceof Enderman) {
-                                    entity.remove();
-                                }
-                            }
-
-                            entities.forEach(Entity::remove);
-                            removeNearbyEndermen(player, 100);
-
-                            giveCursedItem(player);
-                        });
-
-                    }
-                }.runTaskLater(Hungergames.instance, 50L);
-
-            }
             case "storm-creeper" -> {
                 startSuperStorm(locationWorld);
             }
             case "apocalipse" -> {
+                Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(ChatColor.RED + "FUJA!"));
                 startWaterStorm(locationWorld, 1);
                 startCustomized(locationWorld, Particle.LAVA, Material.LAVA);
                 startCustomized(locationWorld, Particle.FALLING_WATER, Material.WATER);
@@ -102,18 +65,10 @@ public class EventsUtil {
             case "storm-water" -> {
                 startCustomized(locationWorld, Particle.FALLING_WATER, Material.WATER);
             }
-//            case "flood" -> {
-//                // Inunda a localização do jogador temporariamente
-//                floodAreaAroundPlayer(locationWorld);
-//            }
             case "gravity" -> {
                 // Aumenta a gravidade ao redor do jogador, tornando difícil se mover
                 applyHeavyGravity(locationWorld);
             }
-//            case "swarm" -> {
-//                // Spawna uma nuvem de abelhas furiosas ao redor do jogador
-//                spawnAngryBees(locationWorld);
-//            }
             case "ice_trap" -> {
                 // Prende o jogador em um cubo de gelo
                 trapPlayerInIce(locationWorld);

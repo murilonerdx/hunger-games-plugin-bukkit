@@ -4,7 +4,6 @@ import org.bukkit.*;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
@@ -22,10 +21,14 @@ public final class Hungergames extends JavaPlugin {
     public static boolean gameStartingEnder = false;
     public static boolean startingGame = false;
     public static boolean gamePause = false;
+    public static boolean gameRestart = false;
     public InitializePlugin<Hungergames> initializePlugin;
     public static BossBar bossBar;
     public static Map<UUID, Long> lastMovementTimes = new HashMap<>();
     public static Map<UUID, Double> playerGiftMoney = new HashMap<>();
+    public static Map<UUID, Boolean> banPlayers = new HashMap<>();
+    public static List<String> getPlayersNamesSponsors = new ArrayList<>();
+
 
     @Override
     public void onEnable() {
@@ -34,8 +37,11 @@ public final class Hungergames extends JavaPlugin {
         initializePlugin.executeCommands();
         initializePlugin.registerServerEvents();
         initializePlugin.schedulesThreadsView();
-        // Cria e inicia a tarefa da barreira
 
+        saveDefaultConfig();
+        reloadConfig();
+        getPlayersNamesSponsors = getConfig().getStringList("sponsors");
+        System.out.println("Configurações e sponsors carregador " + Arrays.toString(getPlayersNamesSponsors.toArray()));
         saveDefaultConfig();
     }
 
@@ -44,9 +50,9 @@ public final class Hungergames extends JavaPlugin {
         // Plugin shutdown logic
     }
 
-    public static void loadWorld(String worldName) {
+    public static World loadWorld(String worldName) {
         WorldCreator creator = new WorldCreator(worldName);
-        Bukkit.getServer().createWorld(creator);
+        return Bukkit.getServer().createWorld(creator);
     }
 
     public static void setLastMovementTime(Player player) {

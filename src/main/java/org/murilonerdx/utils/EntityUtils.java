@@ -22,6 +22,7 @@ import java.util.Random;
 
 
 public class EntityUtils {
+
     // Método para fazer a entidade atacar com força explosiva
     public static void explosiveAttack(LivingEntity attacker, double power) {
         attacker.getWorld().createExplosion(attacker.getLocation(), (float) power, true, true);
@@ -29,7 +30,7 @@ public class EntityUtils {
 
     // Método para fazer uma entidade morrer e nascer outras
     public static void deathSpawnOthers(LivingEntity entity, EntityType spawnType, int count) {
-        entity.setHealth(0); // Mata a entidade
+        entity.setHealth(40); // Mata a entidade
         for (int i = 0; i < count; i++) {
             entity.getWorld().spawnEntity(entity.getLocation(), spawnType);
         }
@@ -37,7 +38,7 @@ public class EntityUtils {
 
     // Método para fazer uma entidade morrer e soltar raios
     public static void deathStrikeLightning(LivingEntity entity, int count) {
-        entity.setHealth(0); // Mata a entidade
+        entity.setHealth(40); // Mata a entidade
         for (int i = 0; i < count; i++) {
             entity.getWorld().strikeLightning(entity.getLocation());
         }
@@ -50,7 +51,7 @@ public class EntityUtils {
     }
 
     // 2. Curar entidade quando chove
-    public static void healInRain(LivingEntity entity, int amount) {
+    public static void healInRain(Player entity, int amount) {
         if (entity.getWorld().hasStorm()) {
             entity.setHealth(Math.min(entity.getHealth() + amount, entity.getMaxHealth()));
         }
@@ -180,9 +181,9 @@ public class EntityUtils {
     public static Location getRandomLocationNearby(Location center, double radius) {
         Random random = new Random();
 
-        double x = center.getX() + (radius * (2 * random.nextDouble() - 1));
+        double x = center.getX() + (radius * (200 * random.nextDouble() - 1));
         double y = center.getY();
-        double z = center.getZ() + (radius * (2 * random.nextDouble() - 1));
+        double z = center.getZ() + (radius * (200 * random.nextDouble() - 1));
 
         return new Location(center.getWorld(), x, y, z);
     }
@@ -196,7 +197,7 @@ public class EntityUtils {
         zombie.setAdult();
         applyPotionEffect(zombie, PotionEffectType.SPEED, 200, 100);
         increasePerceptionRange(zombie, 100);
-        zombie.setHealth(20.0);
+        zombie.setHealth(4.0);
 
         EntityEquipment equipment = zombie.getEquipment();
         if (equipment != null) {
@@ -210,7 +211,7 @@ public class EntityUtils {
 
         AttributeInstance attackAttribute = zombie.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
         if (attackAttribute != null) {
-            attackAttribute.setBaseValue(10.0);
+            attackAttribute.setBaseValue(4.0);
         }
 
         zombie.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1));

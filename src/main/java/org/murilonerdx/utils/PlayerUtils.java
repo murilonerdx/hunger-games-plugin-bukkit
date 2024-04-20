@@ -103,7 +103,7 @@ public class PlayerUtils {
     }
 
     public static boolean isLightSourceNearby(Player player) {
-        int radius = 12; // Define o raio de busca por fontes de luz
+        int radius = 20; // Define o raio de busca por fontes de luz
         Location loc = player.getLocation();
 
         for (int x = -radius; x <= radius; x++) {
@@ -191,23 +191,20 @@ public class PlayerUtils {
             if (block.getState() instanceof Chest chest) {
                 Inventory chestInventory = chest.getBlockInventory();
 
-                String[] events = {
-                        "KIT-RARO", "KIT-FULL", "KIT-CURA", "KIT-BASICO"
-                };
+                KitEnum[] kits = KitEnum.values();
 
-                String chosenEvent = events[new Random().nextInt(events.length)];
-                List<ItemStack> kit = getKit(chosenEvent);
+                KitEnum kit = kits[new Random().nextInt(kits.length)];
+                List<ItemStack> kitShow = getKit(kit.name());
 
-                kit.forEach(t ->
+                kitShow.forEach(t ->
                         chestInventory.addItem(new ItemStack(t.getType(), t.getAmount()))
                 );
 
                 Hungergames.playersInGame.forEach(p -> {
                     Player player = Bukkit.getPlayer(p);
-                    player.sendMessage(ChatColor.RED + "Items com raridade foram dropados em um bau nessa localização ->" + ChatColor.BLUE + " X: "
+                    player.sendMessage(kit.getColor() + "Items com " + kit.getDescricao() + " foram dropados em um bau nessa localização ->" + ChatColor.BLUE + " X: "
                             + chestInventory.getLocation().getX()
                             + ChatColor.LIGHT_PURPLE + " Y: " + chestInventory.getLocation().getY() + ChatColor.GREEN + " Z: " + chestInventory.getLocation().getZ()
-                            + ChatColor.GOLD + " =:> ( " + chosenEvent + " ) + <:="
                     );
                 });
             }
@@ -217,7 +214,7 @@ public class PlayerUtils {
 
     public static List<ItemStack> getKit(String kitName) {
         return switch (kitName.toUpperCase()) {
-            case "KIT-RARO" -> List.of(
+            case "KIT_RARO" -> List.of(
                     new ItemStack(Material.DIAMOND_SWORD, 1),
                     new ItemStack(Material.DIAMOND_HELMET, 1),
                     new ItemStack(Material.DIAMOND_BOOTS, 1),
@@ -232,7 +229,7 @@ public class PlayerUtils {
                     createSpecialBow("IceWallBow"),
                     createSpecialArrow("IceWallArrow", 18)
             );
-            case "KIT-FULL" -> List.of(
+            case "KIT_FULL" -> List.of(
                     new ItemStack(Material.DIAMOND_SWORD, 1),
                     new ItemStack(Material.DIAMOND_HELMET, 1),
                     new ItemStack(Material.DIAMOND_BOOTS, 1),
@@ -244,7 +241,7 @@ public class PlayerUtils {
                     new ItemStack(Material.BOW, 1),
                     createFireBoots()
             );
-            case "KIT-CURA" -> List.of(
+            case "KIT_CURA" -> List.of(
                     new ItemStack(Material.GOLDEN_APPLE, 18),
                     new ItemStack(Material.BEETROOT_SOUP, 18),
                     new ItemStack(Material.MELON, 28),
@@ -256,7 +253,7 @@ public class PlayerUtils {
                     createSpecialArrow("LightningArrow", 18)
             );
 
-            case "KIT-BASICO" -> List.of(
+            case "KIT_BASICO" -> List.of(
                     new ItemStack(Material.GOLDEN_APPLE, 2),
                     new ItemStack(Material.IRON_SWORD, 1),
                     new ItemStack(Material.MELON, 28),
@@ -335,21 +332,27 @@ public class PlayerUtils {
 
     public static Location findHighestDensityLocation() {
         Map<Location, Integer> playerDensity = new HashMap<>();
-        int highestDensity = 0;
-        Location highestDensityLocation = null;
 
+        // Percorre todos os jogadores no jogo e calcula a densidade em cada localização
         for (UUID uuid : Hungergames.playersInGame) {
             Player player = Bukkit.getPlayer(uuid);
             if (player == null) continue;
-            Location roundedLocation = roundLocation(player.getLocation());
 
-            playerDensity.putIfAbsent(roundedLocation, 0);
-            int currentDensity = playerDensity.get(roundedLocation) + 1;
-            playerDensity.put(roundedLocation, currentDensity);
+            Location playerLocation = player.getLocation();
+            Location roundedLocation = roundLocation(playerLocation);
 
-            if (currentDensity > highestDensity) {
-                highestDensity = currentDensity;
-                highestDensityLocation = roundedLocation;
+            playerDensity.put(roundedLocation, playerDensity.getOrDefault(roundedLocation, 0) + 1);
+        }
+
+        // Encontra a localização com a maior densidade
+        Location highestDensityLocation = null;
+        double highestDensity = 0;
+
+        for (Location location : playerDensity.keySet()) {
+            int density = playerDensity.get(location);
+            if (density > highestDensity) {
+                highestDensity = density;
+                highestDensityLocation = location;
             }
         }
 
@@ -358,13 +361,13 @@ public class PlayerUtils {
 
     private static Location roundLocation(Location location) {
         // Ajuste estes valores para alterar a "resolução" da sua grade
-        int gridBlockSize = 10;
+        int gridBlockSize = 100;
 
-        World world = location.getWorld();
-        int x = (int) Math.round(location.getX() / gridBlockSize) * gridBlockSize;
-        int z = (int) Math.round(location.getZ() / gridBlockSize) * gridBlockSize;
-        // Y não é usado para simplificar, mas você pode incluí-lo se necessário
-        return new Location(world, x, location.getY(), z);
+        double x = Math.round(location.getX() / gridBlockSize) * gridBlockSize;
+        double y = Math.round(location.getY() / gridBlockSize) * gridBlockSize;
+        double z = Math.round(location.getZ() / gridBlockSize) * gridBlockSize;
+
+        return new Location(location.getWorld(), x, y, z);
     }
 
     private static boolean isPlayerOutdoors(Player player) {
@@ -386,7 +389,7 @@ public class PlayerUtils {
     public static void floodAreaAroundPlayer(Location player) {
         World world = player.getWorld();
 
-        int radius = 5; // Raio da inundação
+        int radius = 20; // Raio da inundação
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
                 Location loc = player.clone().add(x, 0, z);

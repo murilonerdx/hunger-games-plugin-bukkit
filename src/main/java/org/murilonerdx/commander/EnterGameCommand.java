@@ -11,7 +11,7 @@ import org.murilonerdx.Hungergames;
 import java.util.Objects;
 
 import static org.murilonerdx.utils.SideBarUtils.setupSidebar;
-import static org.murilonerdx.utils.SideBarUtils.sideBar;
+
 
 public class EnterGameCommand implements CommandExecutor {
     @Override
@@ -19,11 +19,9 @@ public class EnterGameCommand implements CommandExecutor {
         if (commandSender instanceof Player) {
             if(Hungergames.gameStartingEnder){
                 commandSender.sendMessage(
-                        ChatColor.RED + "Parabéns você acaba de entrar para os jogos não tem mais volta"
+                        ChatColor.LIGHT_PURPLE + "Parabéns você acaba de entrar para os jogos não tem mais volta"
                 );
                 Hungergames.playersInGame.add(Objects.requireNonNull(((Player) commandSender).getPlayer()).getUniqueId());
-                sideBar("Status jogadores", "HungerGames");
-                setupSidebar(((Player) commandSender).getPlayer().getName(), 1);
                 return true;
             }else{
                 commandSender.sendMessage("O jogo ainda não foi iniciado para entrada");

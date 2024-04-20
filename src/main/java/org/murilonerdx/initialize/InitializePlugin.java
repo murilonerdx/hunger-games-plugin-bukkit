@@ -28,9 +28,11 @@ public class InitializePlugin<T extends JavaPlugin> {
         Objects.requireNonNull(principal.getCommand("enter")).setExecutor(new EnterGameCommand());
         Objects.requireNonNull(principal.getCommand("startgame")).setExecutor(new StartGameCommand());
         Objects.requireNonNull(principal.getCommand("punish")).setExecutor(new PunishCommand());
+        Objects.requireNonNull(principal.getCommand("herobrine")).setExecutor(new HerobrineCommand());
         Objects.requireNonNull(principal.getCommand("enter-start")).setExecutor(new StartEnterGameCommand());
         Objects.requireNonNull(principal.getCommand("pause")).setExecutor(new PauseGameCommand());
         Objects.requireNonNull(principal.getCommand("continue")).setExecutor(new ContinueGameCommand());
+        Objects.requireNonNull(principal.getCommand("hard-reset")).setExecutor(new RestartGameCommand());
 
         initialCraft();
     }
@@ -49,8 +51,6 @@ public class InitializePlugin<T extends JavaPlugin> {
     public void schedulesThreadsView(){
         EventScheduler scheduler = new EventScheduler();
         scheduler.runTaskTimer(Hungergames.instance, 0L, 20L);
-
-
     }
 
 }

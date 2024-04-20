@@ -7,16 +7,24 @@ commands:
     usage: /startgame
     description: Iniciar jogos mortais
     permission: hungergames.startgame
+  hard-reset:
+    usage: /hard-reset
+    description: Reiniciar jogos mortais
+    permission: hungergames.hard-reset
   enter-start:
     usage: /enter-start
     description: Iniciar entradas
     permission: hungergames.enter-start
+  herobrine:
+    usage: /herobrine
+    description: Você vira o herobrine
+    permission: hungergames.herobrine
   enter:
     description: Entrar no jogo de jogos mortais
     usage: /enter
   punish:
     description: Fazer jogador voltar a jogar
-    usage: /punish <player>
+    usage: /punish <player> <zombies/light/spawn-creatures>
     permission: hungergames.enter
   pause:
     description: Pausar o jogo caso algo aconteça
@@ -35,4 +43,7 @@ permissions:
     default: op
   hungergames.pause:
     description: Pausar jogo
+    default: op
+  hungergames.herobrine:
+    description: Você virou o herobrine
     default: op

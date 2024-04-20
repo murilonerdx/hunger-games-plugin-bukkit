@@ -10,28 +10,25 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.murilonerdx.Hungergames;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import static org.murilonerdx.Hungergames.gamePause;
 import static org.murilonerdx.Hungergames.playersInGame;
-import static org.murilonerdx.utils.SideBarUtils.setupSidebar;
-import static org.murilonerdx.utils.SideBarUtils.sideBar;
 
 public class PauseGameCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (commandSender instanceof Player) {
-            if (Hungergames.gameStartingEnder) {
-                System.out.println("Quantas palavras tem " + strings.length);
-                System.out.println("Pessoas cadastradas " + playersInGame.toString());
-                Hungergames.startingGame = false;
-                Hungergames.gameStartingEnder = false;
+            if (Hungergames.startingGame) {
                 gamePause = true;
-                if (strings.length == 2) {
+                System.out.println(strings.length);
+                if (strings.length == 1) {
                     Player player = Bukkit.getPlayer(strings[0]);
                     if (player != null) {
                         player.sendMessage(
-                                ChatColor.RED + "O jogo foi brevemente pausado pra você por uma violação sua de: " + strings[2]
+                                ChatColor.RED + "O jogo foi brevemente pausado pra você por uma violação sua de: " + strings[1]
                         );
                         player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 255, false, false));
                         player.setWalkSpeed(0.00f);
@@ -87,4 +84,5 @@ public class PauseGameCommand implements CommandExecutor {
         }
         return false;
     }
+
 }

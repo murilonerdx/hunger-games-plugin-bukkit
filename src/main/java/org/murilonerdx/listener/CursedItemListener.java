@@ -27,7 +27,7 @@ public class CursedItemListener implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (player.getInventory().contains(Material.DIAMOND_SWORD)) {
-            // Aplicar efeitos negativos
+            player.sendMessage("Você conseguiu uma espada de diamante, mas isso te deixara lento!.");
             player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 20 * 5, 1)); // Exemplo: Lentidão
         }
     }
@@ -43,7 +43,6 @@ public class CursedItemListener implements Listener {
             // Verifique se o clique é em uma bigorna ou em uma mesa de trabalho
             if (event.getInventory().getType() == InventoryType.ANVIL || event.getInventory().getType() == InventoryType.WORKBENCH) {
                 event.setCancelled(true);
-                // Você pode enviar uma mensagem ao jogador para informar que o item não pode ser usado
                 if (event.getWhoClicked() instanceof Player) {
                     Player player = (Player) event.getWhoClicked();
                     player.sendMessage(ChatColor.RED + "Você está amaldiçoado");

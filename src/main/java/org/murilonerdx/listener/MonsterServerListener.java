@@ -42,10 +42,7 @@ public class MonsterServerListener implements Listener {
         if (Hungergames.startingGame) {
             LivingEntity entity = event.getEntity();
             explodeOnDeath(entity, 1);
-//            deathStrikeLightning(event.getEntity(), 1);
-            // Verifica se a entidade é um monstro
             if (entity instanceof Monster) {
-                // Tenta gerar um item raro
                 ItemStack rareItem = generateRareItem();
                 if (rareItem != null) {
                     event.getDrops().add(rareItem);

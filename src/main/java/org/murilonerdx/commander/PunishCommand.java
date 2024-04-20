@@ -16,8 +16,8 @@ import org.murilonerdx.utils.PlayerUtils;
 import java.util.Objects;
 import java.util.Random;
 
-import static org.murilonerdx.utils.SideBarUtils.setupSidebar;
-import static org.murilonerdx.utils.SideBarUtils.sideBar;
+import static org.murilonerdx.utils.PlayerUtils.floodAreaAroundPlayer;
+
 
 public class PunishCommand implements CommandExecutor {
     @Override
@@ -32,7 +32,14 @@ public class PunishCommand implements CommandExecutor {
                 };
                 String chosenEvent = events[random.nextInt(events.length)];
 
+                if(strings[1] != null){
+                    chosenEvent = strings[1];
+                }
+
                 switch (chosenEvent){
+                    case "water-floor" ->{
+                        floodAreaAroundPlayer(player.getLocation());
+                    }
                     case "zombie" -> {
                         player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 2, 100));
                         EntityUtils.spawnEntitiesAround(player, EntityType.ZOMBIE, 20);

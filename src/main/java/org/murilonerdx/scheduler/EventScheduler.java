@@ -20,7 +20,7 @@ import static org.murilonerdx.utils.PlayerUtils.*;
 
 public class EventScheduler extends BukkitRunnable {
     private final Random random;
-    private int time = 1 * 60;
+    private int time = 1 * 120;
 
     public EventScheduler() {
         this.random = new Random();
@@ -46,14 +46,14 @@ public class EventScheduler extends BukkitRunnable {
     public void run() {
         if (startingGame && !gamePause) {
             getServer().getScheduler().scheduleSyncRepeatingTask(Hungergames.instance, this::checkForImmobilePlayers, 20L, 20L);
-            getServer().getScheduler().scheduleSyncRepeatingTask(Hungergames.instance, () -> {
-                for (UUID uuid : Hungergames.playersInGame) {
-                    Player player = Bukkit.getPlayer(uuid);
-                    if (player != null) {
-                        checkDarkness(player);
-                    }
-                }
-            }, 0L, 20L);
+//            getServer().getScheduler().scheduleSyncRepeatingTask(Hungergames.instance, () -> {
+//                for (UUID uuid : Hungergames.playersInGame) {
+//                    Player player = Bukkit.getPlayer(uuid);
+//                    if (player != null) {
+//                        checkDarkness(player);
+//                    }
+//                }
+//            }, 0L, 20L);
 
 
 
@@ -66,23 +66,22 @@ public class EventScheduler extends BukkitRunnable {
                 };
 
                 String chosenEvent = events[random.nextInt(events.length)];
+                System.out.println("Novo evento adicionado: " + chosenEvent);
                 executeEvent(chosenEvent);
-                time = 60;
+                time = 120;
             } else {
                 time--;
                 if (Hungergames.bossBar != null) {
-                    double progress = (double) time / 60;
+                    double progress = (double) time / 120;
                     Hungergames.bossBar.setProgress(progress);
                     Hungergames.bossBar.setTitle(ChatColor.RED + "Próximo evento em: " + time + " segundos");
                 } else {
                     bossBar = Bukkit
-                            .createBossBar(ChatColor.DARK_PURPLE + "Proximo evento em 1 minuto", BarColor.BLUE, BarStyle.SOLID);
+                            .createBossBar(ChatColor.DARK_PURPLE + "Proximo evento em 2 minutos", BarColor.BLUE, BarStyle.SOLID);
                     bossBar.setVisible(true);
                     bossBar.setStyle(BarStyle.SOLID);
-                    bossBar.setProgress((double) time / 60);
+                    bossBar.setProgress((double) time / 120);
                 }
-                // Escolha um jogador aleatório para o evento
-                // Escolha um evento aleatório
 
             }
         }
@@ -96,6 +95,7 @@ public class EventScheduler extends BukkitRunnable {
         bossBar.removeAll();
         bossBar = Bukkit
                 .createBossBar(ChatColor.DARK_PURPLE + event, BarColor.BLUE, BarStyle.SOLID);
+
         bossBar.setVisible(true);
         bossBar.setStyle(BarStyle.SOLID);
 
